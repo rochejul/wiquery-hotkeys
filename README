@@ -1,0 +1,84 @@
+Bind the plugin http://github.com/tzuryby/jquery.hotkeys to wiQuery
+
+Example of use:
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" xmlns:wicket="http://wicket.apache.org/">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>WiQuery application</title>
+	</head>
+	
+	<body>
+		<h1>Some hotkeys example</h1>
+		
+		<h2>Shortcut on the page</h2>
+		<p>
+			If you done Ctrl+S, the following code will be executed:
+		</p>
+		
+		<code>
+			function(){
+				alert('Ctrl+S done');
+			}
+		</code>
+		
+		<hr />
+		
+		<h2>Shortcut on a component</h2>
+		<p wicket:id="component">
+			If you done Shift+F8, the following code will be executed:
+		</p>
+		
+		<code>
+			function(){
+				alert('Shift+F8 done');
+			}
+		</code>
+		
+		<hr />
+	</body>
+</html>
+
+package org.odlabs.wiquery.plugins.hotkeys;
+
+import org.apache.wicket.PageParameters;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.WebPage;
+
+/**
+ * Homepage
+ */
+public class HomePage extends WebPage {
+
+	private static final long serialVersionUID = 1L;
+
+	/**
+	 * Constructor that is invoked when page is invoked without a session.
+	 * 
+	 * @param parameters
+	 *            Page parameters
+	 */
+	public HomePage(final PageParameters parameters) {
+		super();
+		
+		add(new HotkeysBehavior(
+			JsScopeHotKeys.quickScope("alert('Ctrl+S done');"), 
+			HotkeysBehavior.KeysEnum.S, 
+			HotkeysBehavior.CombinaisonKeysEnum.Ctrl)
+		);
+		
+		
+		WebMarkupContainer component = new WebMarkupContainer("component");
+		component.add(new HotkeysBehavior(
+			JsScopeHotKeys.quickScope("alert('Shift+F8 done');"), 
+			HotkeysBehavior.KeysEnum.F8, 
+			HotkeysBehavior.CombinaisonKeysEnum.Shift)
+		);
+		component.add(new HotkeysBehavior(
+				JsScopeHotKeys.quickScope("alert('Ctrl+S done on component');"), 
+				HotkeysBehavior.KeysEnum.S, 
+				HotkeysBehavior.CombinaisonKeysEnum.Ctrl)
+			);
+		add(component);
+	}
+}
